@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>Getting Started</title>
+
+    <!--[if gt IE 8]><!--><link href="stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href="stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
+
+    <link rel="canonical" href="https://content-api.publishing.service.gov.uk/getting-started.html">
+
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+    <script src="javascripts/application.js"></script>
+  </head>
+
+  <body>
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="skip-link">Skip to main content</a>
+
+        <header class="header header--full-width">
+  <div class="header__container">
+    <div class="header__brand">
+        <a href="/">
+          <span class="govuk-logo">
+            <img class="govuk-logo__printable-crown" src="images/gov.uk_logotype_crown_invert_trans.png" height="32" width="36">
+            GOV.UK
+          </span>
+        <span class="header__title">
+          Trade Tariff API
+        </span>
+        </a>
+    </div>
+
+      <div data-module="navigation">
+        <button type="button" class="header__navigation-toggle js-nav-toggle" aria-controls="navigation" aria-label="Show or hide top level navigation">Menu</button>
+
+        <nav id="navigation" class="header__navigation js-nav" aria-label="Top Level Navigation" aria-hidden="true">
+          <ul>
+              <li>
+                <a href="/">
+                  About
+                </a>
+              </li>
+              <li class="active">
+                <a href="/getting-started.html">
+                  Getting Started
+                </a>
+              </li>
+              <li>
+                <a href="/reference.html">
+                  Reference
+                </a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+  </div>
+</header>
+
+      </div>
+
+      <div id="toc-heading" class="toc-show fixedsticky">
+        <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          Table of contents <span class="toc-show__icon"></span>
+        </a>
+      </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+        <div class="app-pane__toc">
+          <div class="toc" data-module="table-of-contents">
+            <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+            <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading">
+              <ul>
+  <li>
+    <a href="#getting-started">Getting Started</a>
+    <ul>
+      <li>
+        <a href="#accessing-content">Accessing Content</a>
+        <ul>
+          <li>
+            <a href="#harmonized-system">Harmonized System</a>
+          </li>
+          <li>
+            <a href="#measures">Measures</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#making-use-of-content">Making use of content</a>
+        <ul>
+          <li>
+            <a href="#ruby-on-rails">Ruby on Rails</a>
+          </li>
+          <li>
+            <a href="#node-js-with-axios">node.js with Axios</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+            </nav>
+          </div>
+        </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="getting-started">Getting Started</h1>
+<p>This guide introduces a number of key concepts in GOV.UK Tariff API through
+the usage of examples. It utilises <a href="https://curl.haxx.se/">curl</a> for
+interfacing with the API on the command line and is chosen due to the wide
+availability of curl, however you may prefer the structured output of
+using <a href="https://httpie.org/">HTTPie</a> or piping the curl responses
+through <a href="https://stedolan.github.io/jq/">jq</a>.</p>
+<h2 id="accessing-content">Accessing Content</h2>
+<p>GOV.UK Tariff API is used to access content that is hosted on
+<a href="https://www.gov.uk/trade-tariff">www.gov.uk/trade-tariff</a> (referred to as GOV.UK Tariff).
+For a given commodity, for example <a href="https://www.trade-tariff.service.gov.uk/trade-tariff/commodities/0101210000">Pure-bred breeding animals</a>, we can look this up through this API:</p>
+<div class="highlight"><pre class="highlight shell"><code>curl https://trade-tariff.service.gov.uk/v1/commodities/0101210000.json
+</code></pre></div>
+<p>This will return a <a href="reference.html#commodity"><code>commodity</code></a> object. Within this object are
+fields that describe the commodity itself, it import and export measures, footnotes, 
+metadata and associations and other content.</p>
+<h3 id="harmonized-system">Harmonized System</h3>
+<p>The <a href="http://www.wcoomd.org/en/topics/nomenclature/overview/what-is-the-harmonized-system.aspx">Harmonized Commodity Description and Coding System</a>, also known as the Harmonized System (HS) of tariff nomenclature is an internationally standardized system of names and numbers to classify traded products.</p>
+
+<p>The HS is organized logically by economic activity or component material. The HS is organized into 21 sections, which are subdivided into 97 chapters. The 97 HS chapters are further subdivided into approximately 5,000 headings and subheadings.</p>
+
+<p>Many of the objects returned from this API include a <code>goods_nomenclature_item_id</code> field, which is an implementation of the <a href="https://ec.europa.eu/taxation_customs/business/calculation-customs-duties/what-is-common-customs-tariff/combined-nomenclature_en">Combined Nomenclature</a>, a system of classifying goods under the HS.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>{
+  ...
+  "goods_nomenclature_item_id": "0101210000",
+  ...
+}
+</code></pre></div>
+<p>Every <a href="reference.html#commodity"><code>commodity</code></a> (e.g., heading and sub-heading) has a <code>goods_nomenclature_item_id</code> and this value is used to identify any commodity in the Tariff.</p>
+
+<!-- The "base" aspect of this field is used as it indicates the root path of this
+piece of content as some pieces of content
+[span multiple pages][multiple-pages]. -->
+<h3 id="measures">Measures</h3><div class="highlight"><pre class="highlight plaintext"><code>{
+  ...
+  "import_measures": [ 
+    {
+      "id": 3563221,
+      ...
+    }
+  ],
+  "export_measures": [
+    {
+      "id": 3563221,
+      ...
+    }
+   ],
+  ...
+}
+</code></pre></div>
+<p>The <code>import_measures</code> and <code>import_measures</code> fields contain information about measures that affect importing and exporting goods. These fields are arrays, containing a number of <code>measure</code> objects, and each of these objects is a single import or export measure that applies to a commodity.</p>
+<h2 id="making-use-of-content">Making use of content</h2><h3 id="ruby-on-rails">Ruby on Rails</h3>
+<p>It can be simple to make use of GOV.UK in your application. The example below
+utilises <a href="http://rubyonrails.org/">Ruby on Rails</a>
+with <a href="https://github.com/rest-client/rest-client">Rest Client</a>.</p>
+<div class="highlight"><pre class="highlight ruby"><code><span class="nb">require</span> <span class="s2">"rest-client"</span>
+
+<span class="n">commodity</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"/v1/commodities/0101210000.json"</span><span class="p">,</span> <span class="ss">expires_in: </span><span class="mi">1</span><span class="p">.</span><span class="nf">day</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="no">RestClient</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">"https://trade-tariff.service.gov.uk/v1/commodities/0101210000.json"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">content_type: </span><span class="s2">"json"</span> <span class="p">})</span>
+  <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">).</span><span class="nf">dig</span><span class="p">(</span><span class="s2">"details"</span><span class="p">,</span> <span class="s2">"body"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">content</span> <span class="o">=</span> <span class="s2">"&lt;h1&gt;GOV.UK Tariff Information&lt;/h1&gt;&lt;div&gt;</span><span class="si">#{</span><span class="n">commodity</span><span class="si">}</span><span class="s2">&lt;/div&gt;"</span>
+</code></pre></div>
+<p>In this example we utilise the Rails cache layer so that we can infrequently
+access the content on the API.</p>
+
+<p>We then use the API to access the content for <a href="https://www.trade-tariff.service.gov.uk/trade-tariff/commodities/0101210000">Pure-bred breeding animals</a>. In the response we access the <code>body</code> field from within the <code>details</code> object. We store this to a variable <code>commodity</code>.</p>
+
+<p>Finally we embed this in our own Ruby on Rails app and are ready to output to users.</p>
+<h3 id="node-js-with-axios">node.js with Axios</h3>
+<p>The example below uses <a href="https://nodejs.org/">node.js</a> and the popular <a href="https://github.com/axios/axios">Axios</a> module, a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises">Promise</a>-based HTTP client for node.js and the browser. Here, we retreive a commondity and print its <code>formatted_description</code> to the console.</p>
+<div class="highlight"><pre class="highlight javascript"><code><span class="kd">const</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'axios'</span><span class="p">);</span>
+
+<span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'https://trade-tariff.service.gov.uk/v1/commodities/0101210000.json'</span><span class="p">)</span>
+     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">formatted_description</span><span class="p">);</span>
+      <span class="p">})</span>
+     <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+     <span class="p">});</span>
+</code></pre></div>
+<p>Note the use of <code>.then()</code> to handle the Promise, and errors are handled by <code>.catch()</code>. Axios handles converting the JSON response to a javascript object.</p>
+
+          </main>
+
+          <footer class="footer">
+  <div class="footer__licence">
+    <a class="footer__licence-logo" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a>
+    <p class="footer__licence-description">All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
+  </div>
+
+  <div class="footer__copyright">
+    <a class="footer__copyright-logo" href="http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/">© Crown copyright</a>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-97208357-3', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('set', 'displayFeaturesTask', null);
+  ga('set', 'transport', 'beacon');
+  ga('send', 'pageview');
+  </script>
+
+  </body>
+</html>
