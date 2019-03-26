@@ -465,6 +465,53 @@ paths:
           source: |-
             curl -X GET https://www.trade-tariff.service.gov.uk/v1/monetary_exchange_rates.json
 
+### Goods nomenclature
+  /v1/goods_nomenclature.(json|csv):
+    get:
+      summary:
+        Retrieves a list of goods nomenclatures
+      description: |
+        This resource represents the goods nomenclatures in the Trade Tariff.
+
+        Each goods nomenclature has a `goods_nomenclature_item_id`, which is its unique identifier in the Trade Tariff, and a `sid`, which is a unique record identifier.
+
+        This resource may be requested in either JSON or CSV format. Please ensure the uri includes a file extension of either `.json` or `.csv`.
+
+        This resource may be requested with an optional parameter, `as_of`, which will cause the results to be computed as if the request were made on that date. The `as_of` date is a string of 10 characters, in the format `yyyy-mm-dd`.
+      tags:
+      - Goods Nomenclature
+      produces:
+      - application/json
+      - text/csv
+      parameters:
+        - name: 'as_of'
+          in: path
+          required: false
+          description: |
+            The results will be provided as they existed on the `as_of` date.
+            
+            The `as_of` date is a string of 10 characters, in the format `yyyy-mm-dd`.
+          schema:
+            type: string
+            minimum: 10
+            example: 1971-12-31
+      responses:
+        200:
+          description: Goods nomenclatures were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodsNomenclatures'
+              example:
+                $ref: '#/components/schemas/GoodsNomenclatures/example'
+        5XX:
+          description: Unexpected error.
+      x-code-samples:
+        /v1/chapters.json:
+          lang: shell
+          source: |-
+            curl -X GET https://www.trade-tariff.service.gov.uk/v1/goods_nomenclature.json?as_of=1971-12-31
+
 components:
   schemas:
 
@@ -2022,6 +2069,49 @@ components:
         exchange_rate: '0.8226'
         operation_date: '2014-03-28'
         validity_start_date: '2014-03-01T00:00:00.000Z'
+
+    GoodsNomenclatures:
+      description: |
+        All goods nomenclatures in the Trade Tariff
+      type: object
+      properties:
+        sid:
+          type: integer
+          description: The `sid` of the goods nomenclature.
+        goods_nomenclature_item_id:
+          type: string
+          description: The `goods_nomenclature_item_id` of the goods nomenclature.  This is a string of ten (10) digits.
+        description:
+          type: string
+          description: The `description` of the goods nomenclature.
+        number_of_indents:
+          type: integer
+          description: The `number_of_indents` of the goods nomenclature.
+        product_line_suffix:
+          type: string
+          description: The `product_line_suffix` of the goods nomenclature.
+        href:
+          type: string
+          description:  The `href` of the goods nomenclature. A URI that also indicates the object type (e.g., Chapter, Heading, Commodity, etc.) of the goods nomenclature. 
+      example:
+      - sid: 27623
+        goods_nomenclature_item_id: "0100000000"
+        description: "LIVE ANIMALS"
+        number_of_indents: 0
+        product_line_suffix: "80"
+        href: "/v1/chapters/01.json"
+      - sid: 27624
+        goods_nomenclature_item_id: "0101000000"
+        description: "Live horses, asses, mules and hinnies"
+        number_of_indents: 0
+        product_line_suffix: "80"
+        href: "/v1/headings/0101.json"
+      - sid: 93797
+        goods_nomenclature_item_id: "0101210000"
+        description: "Horses"
+        number_of_indents: 1
+        product_line_suffix: "10"
+        href: "/v1/commodities/0101210000.json"
 
 ### Referenced objects
 
