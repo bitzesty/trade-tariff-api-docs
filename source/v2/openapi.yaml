@@ -1007,7 +1007,7 @@ components:
               goods_nomenclature_item_id: "0101000000"
               declarable: false
               description: "Live horses, asses, mules and hinnies"
-              producline_suffix: "80"
+              productline_suffix: "80"
               leaf: true
               description_plain: "Live horses, asses, mules and hinnies"
               formatted_description: "Live horses, asses, mules and hinnies"
@@ -1018,7 +1018,7 @@ components:
               goods_nomenclature_item_id: "0102000000"
               declarable: false
               description: "Live bovine animals"
-              producline_suffix: "80"
+              productline_suffix: "80"
               leaf: true
               description_plain: "Live bovine animals"
               formatted_description: "Live bovine animals"
@@ -1205,7 +1205,7 @@ components:
             goods_nomenclature_sid: 27811,
             formatted_description: "Carcases and half-carcases"
             description_plain: "Carcases and half-carcases"
-            producline_suffix: "80"
+            productline_suffix: "80"
             parent_sid: null
           relationships:
             overview_measures:
@@ -1318,7 +1318,7 @@ components:
           id: "27777"
           type: commodity
           attributes:
-            producline_suffix: "80"
+            productline_suffix: "80"
             description: "Lambs (up to a year old)"
             number_indents: 3
             goods_nomenclature_item_id: "0104103000"
@@ -1373,7 +1373,7 @@ components:
         - id: "27774"
           type: commodity
           attributes:
-            producline_suffix: "80"
+            productline_suffix: "80"
             description: "Sheep"
             number_indents: 1
             goods_nomenclature_item_id: "0104100000"
@@ -1815,9 +1815,9 @@ components:
         description:
           type: string
           description: The text `description` of the heading.
-        producline_suffix:
+        productline_suffix:
           type: string
-          description: The `producline_suffix` of the heading.
+          description: The `productline_suffix` of the heading.
         leaf:
           type: boolean
           description: Whether this heading is a `leaf`.
@@ -1885,9 +1885,9 @@ components:
         description_plain:
           type: string
           description: The `description_plain` of the commodity.
-        producline_suffix:
+        productline_suffix:
           type: string
-          description: The `producline_suffix` of the commodity.
+          description: The `productline_suffix` of the commodity.
         parent_sid:
           type: string
           description: The `parent_sid` of the commodity.
@@ -1900,7 +1900,7 @@ components:
         goods_nomenclature_sid: 93797
         formatted_description: Horses
         description_plain: Horses
-        producline_suffix: '10'
+        productline_suffix: '10'
         parent_sid:
 
     ReferencedCommodityChange:
