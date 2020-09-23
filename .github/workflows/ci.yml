@@ -1,0 +1,65 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.6
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+      - name: Build
+        run: |
+          sudo apt-get update -qy
+          sudo apt-get install -y build-essential rake postgresql postgresql-client libpq-dev xvfb unzip libcurl4 libcurl3-gnutls libcurl4-openssl-dev
+          gem install bundler --version "<= $BUNDLER_VERSION"
+          bundle install --jobs 4 --retry 3 --path vendor/bundle
+          npm install
+          ./generate.js source/v2/openapi.yaml source/reference.html.md.erb
+          bundle exec rake build API_SPEC=source/v2/openapi.yaml
+  deploy_dev:
+    needs: [test]
+    if: github.ref == 'refs/heads/master_notyet'
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.6
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+      - name: "Deploy dev"
+        env:
+          CF_SPACE: development
+          CF_APP: "tariff-api-dev"
+          CF_ENDPOINT: ${{ secrets.CF_ENDPOINT }}
+          CF_USER: ${{ secrets.CF_USER }}
+          CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+          CF_ORG: ${{ secrets.CF_ORG }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+          sudo dpkg -i cf-cli_amd64.deb
+          cf -v
+          ./bin/deploy
