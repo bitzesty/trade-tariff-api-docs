@@ -164,6 +164,5 @@ You should now be able to view a live preview at http://localhost:4567.
 
 [forked-widdershins]: https://github.com/alphagov/widdershins
 [widdershins]: https://github.com/Mermade/widdershins
-[tariff-openapi]: https://gitlab.bitzesty.com/clients/trade-tariff/trade-tariff-api-docs/tree/master/source/v2/openapi.yaml
-[source-dir]: https://gitlab.bitzesty.com/clients/trade-tariff/trade-tariff-api-docs/tree/master/source
+[tariff-openapi]: https://github.com/bitzesty/trade-tariff-api-docs/tree/master/source/v2/openapi.yaml
 [tech-docs-template]: https://github.com/alphagov/tech-docs-template
