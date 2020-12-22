@@ -125,7 +125,8 @@ Manual build and deploy is not necessary if automated deploy is used.
 1.  Build the documentation
 
 ```
-bundle exec middleman build --clean
+./generate.js source/v2/openapi.yaml source/reference.html.md.erb
+bundle exec rake build API_SPEC=source/v2/openapi.yaml
 ```
 
 2.  Push to prod
