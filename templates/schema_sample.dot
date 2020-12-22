@@ -2,8 +2,8 @@
 
 <summary>Sample JSON</summary>
 
-```json
+<samp>
 {{=JSON.stringify(data.schema,null,2)}}
-```
+</samp>
 
 </details>
